@@ -1,0 +1,6 @@
+1) permitir que por meio de uma interface web o usuário possa efetuar o upload de arquivos no formato CSV e XLS para que os dados destes arquivos possam ser importados em nosso cadastro;
+2) usuários da interface web com a responsabilidade de manutenção de dados cadastrais;
+3) precisa ser uma solução orientada a eventos. este upload será para cada um dos distintos de domínio de dados, por exemplo: Produtos, clientes, campanhas. É preciso que quando o arquivo for recebido pelo serviço seja feita validação de compliance com estrutura de dados. Deve ser uma transação assíncrona de maneira que o usuário saiba quais arquivos foram enviados, o status do processo de importação (validando, importado, abortado, completado) e a quantidade de registros, por arquivo importados com sucesso e a quantidade erros que causou abortar a importação.
+
+ajuste o design para que a solulção seja orientada a eventos, utilizando pub/sub do GCP.
+
