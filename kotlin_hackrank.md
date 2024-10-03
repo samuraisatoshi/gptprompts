@@ -1,4 +1,3 @@
-Entendi. Se o tempo total disponível para o teste no HackerRank é de apenas 90 minutos, precisamos ajustar a avaliação técnica para caber dentro desse intervalo, mantendo a profundidade e o desafio das questões. Dado esse tempo limitado, recomendamos focar em alguns dos tópicos mais críticos para desenvolvedores Android especializados em Kotlin.
 
 ### Avaliação Técnica Compacta para 90 minutos:
 
