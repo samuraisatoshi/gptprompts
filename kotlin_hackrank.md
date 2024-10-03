@@ -1,5 +1,4 @@
-
-### Avaliação Técnica Compacta para 90 minutos:
+### Avaliação Técnica para 90 minutos:
 
 ### Seção 1: Multi-threading, Coroutines e Channels
 
@@ -7,7 +6,7 @@
 
 **Descrição:** Implemente um sistema que gerencie múltiplas coroutines para simular downloads concorrentes de arquivos. Cada download deve retornar um valor específico para mostrar que a coroutine foi executada corretamente.
 
-**Tempo:** 25 minutos
+**Tempo:** 20 minutos
 
 **Código de Esqueleto:**
 ```kotlin
@@ -37,13 +36,71 @@ fun main() = runBlocking {
 }
 ```
 
-### Seção 2: Hash Tables
+### Seção 2: DataBinding e MVVM
 
 **Pergunta / Desafio 2:**
 
-**Descrição:** Implemente uma tabela de hash com as operações básicas: inserção (`put`), busca (`get`) e remoção (`remove`).
+**Descrição:** Implemente um exemplo básico de MVVM utilizando DataBinding no Android. O exemplo deve ligar dados simples de um `ViewModel` para uma `TextView` em um layout.
 
 **Tempo:** 25 minutos
+
+**Código de Esqueleto:**
+```kotlin
+// ViewModel.kt
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+
+class SimpleViewModel : ViewModel() {
+    private val _text = MutableLiveData("Hello, MVVM with DataBinding!")
+    val text: LiveData<String> get() = _text
+}
+
+// activity_main.xml
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.app.SimpleViewModel" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.text}" />
+    </LinearLayout>
+</layout>
+
+// MainActivity.kt
+import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import com.example.app.databinding.ActivityMainBinding
+
+class MainActivity : AppCompatActivity() {
+    private val viewModel: SimpleViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+    }
+}
+```
+
+### Seção 3: Hash Tables
+
+**Pergunta / Desafio 3:**
+
+**Descrição:** Implemente uma tabela de hash com as operações básicas: inserção (`put`), busca (`get`) e remoção (`remove`).
+
+**Tempo:** 20 minutos
 
 **Código de Esqueleto:**
 ```kotlin
@@ -91,78 +148,39 @@ fun main() {
 }
 ```
 
-### Seção 3: SOLID
+### Seção 4: Conceitos de MVVM
 
-**Pergunta / Desafio 3:**
+**Pergunta 4:**
 
-**Descrição:** Desenvolva um módulo de pagamento que siga os princípios SOLID. Utilize o princípio de responsabilidade única e a inversão de dependência.
+**Descrição:** Explique brevemente os principais conceitos do padrão arquitetônico MVVM e como ele se diferencia de outros padrões como MVP e MVC na construção de aplicações Android.
 
-**Tempo:** 20 minutos
+**Tempo:** 15 minutos
 
-**Código de Esqueleto:**
-```kotlin
-interface PaymentProcessor {
-    fun processPayment(amount: Double)
-}
+**Resposta Esperada:**
+```plaintext
+MVVM (Model-View-ViewModel) é um padrão arquitetônico em que:
+- Model: Representa a camada de dados ou lógica de negócios.
+- View: Representa a interface de usuário e exibição dos dados.
+- ViewModel: Atua como um intermediário entre Model e View, mantendo o estado e fornecendo dados que a View consome, geralmente via DataBinding.
 
-class CreditCardProcessor : PaymentProcessor {
-    override fun processPayment(amount: Double) {
-        // Implementação do processamento de pagamento com cartão de crédito
-        println("Processing credit card payment of $$amount")
-    }
-}
-
-class PaymentService(private val processor: PaymentProcessor) {
-    fun makePayment(amount: Double) {
-        processor.processPayment(amount)
-    }
-}
-
-fun main() {
-    val paymentService = PaymentService(CreditCardProcessor())
-    paymentService.makePayment(100.0)  // Expected: Processing credit card payment of $100.0
-}
-```
-
-### Seção 4: Programação Orientada a Eventos
-
-**Pergunta / Desafio 4:**
-
-**Descrição:** Utilize Kotlin Flow para criar um fluxo que emite valores a cada segundo e permita que um consumidor processe esses valores à medida que são emitidos.
-
-**Tempo:** 20 minutos
-
-**Código de Esqueleto:**
-```kotlin
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
-
-fun simpleFlow(): Flow<Int> = flow {
-    for (i in 1..3) {
-        delay(1000L)
-        emit(i)
-    }
-}
-
-fun main() = runBlocking<Unit> {
-    simpleFlow().collect { value ->
-        println(value)  // Expected: 1, 2, 3 (one per second)
-    }
-}
+Diferenças entre MVP e MVC:
+- MVP (Model-View-Presenter): O Presenter atua como intermediário, com a View sendo passiva. É adequado para separar regras de apresentação.
+- MVC (Model-View-Controller): O Controller atua como intermediário com a View sendo atualizada diretamente pelo Controller. É comum em frameworks web, mas pode criar ligações mais rígidas.
+Em MVVM, o ViewModel pode ser reutilizável e testável sem dependências da View, ao utilizar DataBinding para comunicação entre View e ViewModel.
 ```
 
 ### Resumo do Tempo:
 
-- Multi-threading, Coroutines e Channels: 25 minutos
-- Hash Tables: 25 minutos
-- SOLID: 20 minutos
-- Programação Orientada a Eventos: 20 minutos
+- Multi-threading, Coroutines e Channels: 20 minutos
+- DataBinding e MVVM: 25 minutos
+- Hash Tables: 20 minutos
+- Conceitos de MVVM: 15 minutos
 
-**Tempo Total:** 90 minutos
+**Tempo Total:** 80 minutos
 
 ### Implementação no HackerRank
 
-Ao configurar cada questão no HackerRank, adicione as descrições detalhadas e esqueleto de código fornecidos acima. Defina o tempo permitido para cada questão de acordo com as estimativas de tempo para garantir que o desafio completo não exceda 90 minutos.
+Você pode adicionar estas perguntas no HackerRank, garantindo que cada pergunta seja clara e estruturada para permitir avaliação automática quando possível. Aqui está um exemplo de como configurar uma questão no HackerRank:
 
 ### Configuração de Questão no HackerRank:
 
@@ -173,7 +191,7 @@ Ao configurar cada questão no HackerRank, adicione as descrições detalhadas e
 Implemente um sistema que gerencie múltiplas coroutines para simular downloads concorrentes de arquivos. Cada download deve retornar um valor específico para mostrar que a coroutine foi executada corretamente. Complete a função `downloadFile` e crie a estrutura para gerenciar múltiplos downloads concorrentes. Use Kotlin e a biblioteca `kotlinx.coroutines`.
 ```
 
-**Duração:** 25 minutos
+**Tempo:** 20 minutos
 
 **Esqueleto do Código:**
 ```kotlin
@@ -203,18 +221,8 @@ fun main() = runBlocking {
 }
 ```
 
-### Repetir para cada seção:
+### Configuração para outras seções:
 
-**Seção 2:**
-**Título:** Implementação de Tabela de Hash
-**Duração:** 25 minutos
+Repita o processo de configuração para as seções de DataBinding e MVVM, Hash Tables e Conceitos de MVVM, ajustando o tempo e as descrições conforme necessário.
 
-**Seção 3:**
-**Título:** Módulo de Pagamento seguindo os Princípios SOLID
-**Duração:** 20 minutos
-
-**Seção 4:**
-**Título:** Programação Orientada a Eventos com Kotlin Flow
-**Duração:** 20 minutos
-
-Certifique-se de que cada pergunta esteja claramente definida e testável na plataforma HackerRank. Com esse conjunto de questões, você obterá uma avaliação eficaz das habilidades dos desenvolvedores dentro do limite de tempo disponível.
+Desta forma, você garante que importantes áreas de conhecimento sejam avaliadas dentro do limite de tempo disponível.
